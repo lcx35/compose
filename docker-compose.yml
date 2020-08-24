@@ -1,0 +1,51 @@
+
+php-fpm:
+        image: lcx3/php-fpm7.2:latest
+        volumes:
+                #代码存放目录
+                - /data/compose/www:/var/www/html
+        expose:
+                - "9000"
+
+redis:
+        image: redis:alpine
+        volumes:
+                #redis数据存放目录(无用)
+                - /data/compose/data/redis:/data
+        expose:
+                - "6379"
+        ports:
+                - "6379:6379"
+mysql:
+        image: mysql:5.7
+        volumes:
+                #mysql数据存放目录
+                - /data/compose/data/mysql:/var/lib/mysql
+        command: [
+                '--character-set-server=utf8',
+                '--collation-server=utf8_unicode_ci',
+                '--max_connections=3000'
+        ]
+        expose:
+                - "3306"
+        ports:
+                - "3306:3306"
+        environment:
+                #mysql root 密码
+                MYSQL_ROOT_PASSWORD: "XIAOzi2308842"
+
+nginx:
+        image: nginx:1.16.0-alpine
+        volumes:
+                #代码存放目录
+                - /data/compose/www:/usr/share/nginx/html
+                #nginx域名配置目录
+                - /data/compose/conf.d:/etc/nginx/conf.d:ro
+        links:
+                - php-fpm
+                - redis
+                - mysql
+        ports:
+                - "80:80"
+        expose:
+                - "80"

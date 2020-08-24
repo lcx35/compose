@@ -1,0 +1,9 @@
+docker commit 1db2c143ae57 lcx3/php-fpm7.2
+docker login
+docker images
+docker push lcx3/php-fpm7.2
+docker push lcx3/php-fpm7.2:latest
+docker tag 5fb53c6219e4 lcx3/php-fpm7.2
+docker images
+docker push lcx3/php-fpm7.2
+
